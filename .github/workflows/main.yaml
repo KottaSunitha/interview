@@ -21,13 +21,6 @@ jobs:
           eval $(ssh-agent)
           echo "0valEdge!" | ssh-add -
 
-      - name: Debug SSH Agent
-        run: |
-          echo "Listing loaded SSH keys..."
-          ssh-add -l
-          echo "Checking SSH configuration..."
-          cat $HOME/.ssh/config || true
-
       - name: SSH into EC2 and create test file
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@18.117.81.161 'bash -s' < touch /home/ubuntu/create_test_file.sh
