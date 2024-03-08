@@ -16,7 +16,7 @@ jobs:
       - name: Build & Deploy
         env:
             PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-            HOSTNAME: "ec2-18-117-81-161.us-east-2.compute.amazonaws.com"
+            HOSTNAME: ${{ secrets.HOST_NAME }}
             USER_NAME: "ubuntu"
 
 
