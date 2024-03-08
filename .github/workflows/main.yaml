@@ -17,6 +17,9 @@ jobs:
             HOSTNAME: "ec2-18-117-81-161.us-east-2.compute.amazonaws.com"
             USER_NAME: ${{secrets.USER_NAME}}
 
+      - name: Decrypt SSH private key
+        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
