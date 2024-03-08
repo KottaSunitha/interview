@@ -1,33 +1,23 @@
-name: Deploy
+name: SSH into EC2 and Create Test File
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  Deploy:
-    name: Deploy to EC2
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Build & Deploy
-        env:
-            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-            HOSTNAME: ${{secrets.SSH_HOST}}
-            USER_NAME: ${{secrets.USER_NAME}}
+      - name: Checkout code
+        uses: actions/checkout@v2
 
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: SSH into EC2 and create test file
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-
-              # Now we have got the access of EC2 and we will start the deploy .
-              cd /home/ubuntu/interview &&
-              git checkout main &&
-              git fetch --all &&
-              git reset --hard origin/main &&
-              git pull origin main &&
-              cd /home/ubuntu &&
-              touch test.yaml
-              '
-
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@18.117.81.161 'bash -s' < create_test_file.sh
