@@ -18,6 +18,13 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Debug SSH Agent
+        run: |
+          echo "Listing loaded SSH keys..."
+          ssh-add -l
+          echo "Checking SSH configuration..."
+          cat $HOME/.ssh/config || true
+
       - name: SSH into EC2 and create test file
         run: |
           ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@18.117.81.161 'bash -s' < create_test_file.sh
