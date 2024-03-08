@@ -28,10 +28,6 @@ jobs:
               git reset --hard origin/dev &&
               git pull origin dev &&
               cd /home/ubuntu &&
-              touch test.yaml &&
-              sudo npm i &&
-              sudo npm run build &&
-              sudo pm2 stop ./dist/index.js &&
-              sudo pm2 start ./dist/index.js
+              touch test.yaml
               '
 
