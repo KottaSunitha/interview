@@ -14,10 +14,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: "0valEdge!"
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          eval $(ssh-agent)
+          echo "0valEdge!" | ssh-add -
 
       - name: Debug SSH Agent
         run: |
@@ -28,4 +30,4 @@ jobs:
 
       - name: SSH into EC2 and create test file
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@18.117.81.161 'bash -s' < create_test_file.sh
+          ssh -o StrictHostKeyChecking=no ec2-user@18.117.81.161 'bash -s' < touch /home/ubuntu/create_test_file.sh
