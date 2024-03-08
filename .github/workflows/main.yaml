@@ -12,8 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2 
 
-      - name: Decrypt SSH private key
-        run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
 
       - name: Build & Deploy
         env:
@@ -23,7 +21,7 @@ jobs:
 
 
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          echo "$PRIVATE_KEY" > private_key && chmod 600 ${private_key}
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
               # Now we have got the access of EC2 and we will start the deploy .
