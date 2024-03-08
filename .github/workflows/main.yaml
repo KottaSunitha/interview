@@ -17,6 +17,7 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: "0valEdge!"
 
       - name: Debug SSH Agent
         run: |
