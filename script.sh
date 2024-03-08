@@ -1,5 +1,6 @@
 docker stop $(docker ps -a -q)
-docker rm $(docker ps -a -q)
+docker rm $(docker ps -a -q)i
+docker rmi $(docker images -a -q)
 aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 905417996861.dkr.ecr.us-east-2.amazonaws.com
 docker build -t test-ecr .
 TIME=$( date '+%F_%H_%M_%S' )
